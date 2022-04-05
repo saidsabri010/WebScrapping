@@ -1,4 +1,5 @@
 from BeautifulSoup import IMDB
 
-scrapy = IMDB()
-scrapy.getTopMovies()
+# create an instance
+scrape = IMDB()
+scrape.saveResults()

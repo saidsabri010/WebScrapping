@@ -4,6 +4,7 @@ import requests
 import re
 import unidecode
 
+
 class Jobs:
 
     def getUrl(self):
@@ -15,7 +16,6 @@ class Jobs:
     def singleArticle(self):
         soup = self.getUrl()
         job = soup.find('section', class_='blockWrapper colMain')
-        job_article = job.find('article', class_='recommended col-md-4 mb-3')
         job_title = job.article.text.replace(" ", "")
         print(job_title)
 
@@ -73,7 +73,7 @@ class IMDB:
 
     def getUrl(self):
         html_text = requests.get(
-            'https://www.imdb.com/chart/top/',headers={"Accept-Language": "en-US, en;q=0.5"} ).text
+            'https://www.imdb.com/chart/top/', headers={"Accept-Language": "en-US, en;q=0.5"}).text
         soup = BeautifulSoup(html_text, 'lxml')
         return soup
 
@@ -81,15 +81,11 @@ class IMDB:
         titles_list = []
         years_list = []
         ratings_list = []
-        numbers_list = []
-
         soup = self.getUrl()
-
         section = soup.find("tbody", class_="lister-list")
         titles = section.findAll("td", class_="titleColumn")
         years = section.findAll("span", class_="secondaryInfo")
         ratings = section.findAll("td", class_="ratingColumn imdbRating")
-
         for rating in ratings:
             ratings_list.append(rating.text.strip())
         for year in years:
@@ -97,17 +93,16 @@ class IMDB:
             years_list.append(result)
         for title in titles:
             r = title.text.strip().replace("\n", "").split(".")
-            titles_list.append(r[1].replace('  ',''))
-        for title in titles:
-            r = title.text.strip().replace("\n", "").split(".")
-            numbers_list.append(r[0].replace('  ', ''))
+            titles_list.append(r[1].replace('  ', ''))
+        return titles_list, years_list, ratings_list
 
+    def saveResults(self):
+        titles_list, years_list, ratings_list = self.getTopMovies()
         test_df = pd.DataFrame({
-                               'title': titles_list,
-                                'year': years_list,
-                                'rating': ratings_list,
-                                })
+            'title': titles_list,
+            'year': years_list,
+            'rating': ratings_list,
+        })
         test_df.to_csv('TopMovies.csv', sep='\t')
-
 
 
