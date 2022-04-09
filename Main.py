@@ -1,4 +1,4 @@
-from BeautifulSoup import IMDB
+from BeutifulSoup.BeautifulSoup import IMDB
 
 # create an instance
 scrape = IMDB()

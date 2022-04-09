@@ -57,14 +57,14 @@ class Jobs:
 
     def saveTitleResults(self):
         titles = self.getTitle()
-        with open("titles.csv", "w") as output:
+        with open("../Data/titles.csv", "w") as output:
             output.write("Title\n")
             for title in titles:
                 output.write(title + "\n")
 
     def saveUrls(self):
         urls = self.getUrls()
-        with open("urls.csv", "w") as output:
+        with open("../Data/urls.csv", "w") as output:
             for url in urls:
                 output.write(url + "\n")
 
